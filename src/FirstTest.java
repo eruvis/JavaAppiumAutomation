@@ -137,6 +137,15 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchInputLine() {
+        assertElementHasText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Search Wikipedia']"),
+                "Search Wikipedia",
+                "The title you were looking for was not found"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage) {
         return waitForElementPresent(by, errorMessage, 5);
     }
@@ -166,6 +175,14 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.clear();
         return element;
+    }
+
+    private void assertElementHasText(By by, String expectedText, String errorMessage) {
+        Assert.assertEquals(
+                errorMessage,
+                expectedText,
+                waitForElementPresent(by, errorMessage).getAttribute("text")
+        );
     }
 
 }
