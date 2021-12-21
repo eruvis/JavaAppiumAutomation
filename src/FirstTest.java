@@ -176,6 +176,36 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCheckWordInSearchResultLine() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Search container not found",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "JAVA",
+                "",
+                5
+        );
+
+        driver.hideKeyboard();
+
+        for (int index = 0; index < 6; index++) {
+            waitForElementPresent(
+                    By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']" +
+                            "//*[@resource-id='org.wikipedia:id/page_list_item_container' and @index='" +
+                            index +
+                            "']" +
+                            "//*[@resource-id='org.wikipedia:id/page_list_item_title' and " +
+                            "contains(translate(@text, 'JAV', 'jav'), 'java')]"),
+                    "Word 'java' not found in search result list"
+            );
+        }
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
