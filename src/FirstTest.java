@@ -128,21 +128,60 @@ public class FirstTest {
         );
     }
 
-    private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(errorMessage + "\n");
-
-        return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
-        );
-    }
-
     @Test
     public void testSearchInputLine() {
         assertElementHasText(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Search Wikipedia']"),
                 "Search Wikipedia",
                 "The title you were looking for was not found"
+        );
+    }
+
+    @Test
+    public void testCancelSearching() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Search container not found",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "computer",
+                "",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Computer']"),
+                "'Computer program' not found",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Computer program']"),
+                "'Computer science' not found"
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find 'X' to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/fragment_search_results"),
+                "Search results are not missing",
+                5
+        );
+    }
+
+    private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(errorMessage + "\n");
+
+        return wait.until(
+                ExpectedConditions.presenceOfElementLocated(by)
         );
     }
 
