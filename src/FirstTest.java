@@ -218,14 +218,14 @@ public class FirstTest {
 
         waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text, 'Search…')]"),
-                "Java",
+                "Appium",
                 "Cannot find search input",
                 5
         );
 
         waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Island of Indonesia']"),
-                "Cannot find 'Island of Indonesia' topic searching by 'Java'",
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
+                "Cannot find 'Appium' in page list item title",
                 5
         );
 
@@ -235,11 +235,11 @@ public class FirstTest {
                 15
         );
 
-        swipeUp(2000);
-        swipeUp(2000);
-        swipeUp(2000);
-        swipeUp(2000);
-        swipeUp(2000);
+        swipeUpToFindElement(
+                By.xpath("//*[@text='View page in browser']"),
+                "Cannot find the end of the article",
+                20
+        );
     }
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
@@ -298,6 +298,27 @@ public class FirstTest {
         int endY = (int) (size.getHeight() * 0.2);
 
         action.press(x, startY).waitAction(timeOfSwipe).moveTo(x, endY).release().perform();
+    }
+
+    protected void swipeUpQuick() {
+        swipeUp(200);
+    }
+
+    protected void swipeUpToFindElement(By by, String  errorMessage, int maxSwipes) {
+        int alreadySwipes = 0;
+        while (driver.findElements(by).size() == 0) {
+            if (alreadySwipes > maxSwipes) {
+                waitForElementPresent(
+                        by,
+                        "Cannot find element by swiping up." + errorMessage,
+                        0
+                );
+                return;
+            }
+
+            swipeUpQuick();
+            alreadySwipes++;
+        }
     }
 
 }
