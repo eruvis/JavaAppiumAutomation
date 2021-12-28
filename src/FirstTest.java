@@ -598,6 +598,7 @@ public class FirstTest {
                 15
         );
 
+
         assertElementNotPresent(
                 By.xpath(searchResultLocator),
                 "Cannot find anything by the request " + searchLine
@@ -691,6 +692,35 @@ public class FirstTest {
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java (programming language)']"),
                 "Cannot find article after returning from background",
                 5
+        );
+    }
+
+    @Test
+    public void testAvailabilityOfTitle() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java (programming language)']"),
+                "Cannot find 'Java (programming language)' in page list item title",
+                5
+        );
+
+        String titleLocator = "org.wikipedia:id/view_page_title_text";
+
+        assertElementPresent(
+                By.id(titleLocator),
+                "Cannot find title"
         );
     }
 
@@ -808,6 +838,13 @@ public class FirstTest {
         if (amountOfElements > 0) {
             String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
             throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements == 0) {
+            throw new AssertionError(errorMessage);
         }
     }
 
