@@ -33,6 +33,11 @@ public class FirstTest {
         capabilities.setCapability("app", "C:/Users/Eruvis/Desktop/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        
+        if (driver.getOrientation() == ScreenOrientation.LANDSCAPE) {
+            driver.rotate(ScreenOrientation.PORTRAIT);
+        }
+
     }
 
     @After
