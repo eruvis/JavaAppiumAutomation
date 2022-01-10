@@ -1,7 +1,5 @@
 import lib.CoreTestCase;
-import lib.ui.ArticlePageObject;
-import lib.ui.MainPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -42,13 +40,11 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testCompareArticleTitle() {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-
         String articleTitle = ArticlePageObject.getArticleTitle();
 
         Assert.assertEquals(
@@ -61,13 +57,11 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testSwipeArticle() {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Appium");
 
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
     }
@@ -152,105 +146,27 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSaveFirstArticleToMyList() {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "Java",
-                "Cannot find search input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java (programming language)']"),
-                "Cannot find 'Java (programming language)' in page list item title",
-                5
-        );
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.waitForTitleElement();
 
-        MainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title",
-                15
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
-                "Cannot find 'More options' image",
-                5
-        );
-
-        /*Если клики идут мимо, то можно добавить метод ожидания*/
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Add to reading list']"),
-                "Cannot find 'Add to reading list'",
-                10
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/onboarding_button"),
-                "Cannot find 'Go it' top overlay",
-                5
-        );
-
-        MainPageObject.waitForElementAndClear(
-                By.xpath("//*[@resource-id='org.wikipedia:id/text_input']"),
-                "Cannot find input line",
-                5
-        );
-
+        String articleTitle = ArticlePageObject.getArticleTitle();
         String nameOfFolder = "Learning programming";
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[@resource-id='org.wikipedia:id/text_input']"),
-                nameOfFolder,
-                "Cannot find input line",
-                5
-        );
+        ArticlePageObject.addArticleToMyList(nameOfFolder);
+        ArticlePageObject.closeArticle();
 
-        MainPageObject.waitForElementAndClick(
-                By.id("android:id/button1"),
-                "Cannot press 'OK' button",
-                5
-        );
+        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI.clickMyLists();
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Cannot find 'x' button",
-                5
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
-                "Cannot find 'My lists' button",
-                10
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/item_title'][@text='" + nameOfFolder + "']"),
-                "Cannot find item title in lists",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot find created folder"
-        );
-
-        MainPageObject.swipeElementToLeft(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot find send article"
-        );
-
-        MainPageObject.waitForElementNotPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot delete send article",
-                5
-        );
+        MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
+        MyListPageObject.openFolderByName(nameOfFolder);
+        MyListPageObject.swipeByArticleToDelete(articleTitle);
     }
 
     @Test
@@ -288,12 +204,13 @@ public class FirstTest extends CoreTestCase {
                 5
         );
 
-        /** wait last element in list **/
+        /* wait last element in list */
         MainPageObject.waitForElementPresent(
                 By.xpath("//*[@text='Font and theme']"),
                 "Cannot find 'Font and theme'",
                 5
         );
+        /* wait last element in list */
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Add to reading list']"),
