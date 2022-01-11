@@ -28,7 +28,7 @@ public class CoreTestCase extends TestCase {
         driver = new AndroidDriver(new URL(AppiumURL), capabilities);
 
         if (driver.getOrientation() == ScreenOrientation.LANDSCAPE) {
-            driver.rotate(ScreenOrientation.PORTRAIT);
+            this.rotateScreenPortrait();
         }
 
     }
@@ -38,5 +38,17 @@ public class CoreTestCase extends TestCase {
         driver.quit();
 
         super.tearDown();
+    }
+
+    protected void rotateScreenPortrait() {
+        driver.rotate(ScreenOrientation.PORTRAIT);
+    }
+
+    protected void rotateScreenLandscape() {
+        driver.rotate(ScreenOrientation.LANDSCAPE);
+    }
+
+    protected void backgroundApp(int seconds) {
+        driver.runAppInBackground(seconds);
     }
 }
