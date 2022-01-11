@@ -15,6 +15,19 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    public void testCancelSearching() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        String searchLine = "computer";
+        SearchPageObject.typeSearchLine(searchLine);
+        SearchPageObject.waitForSearchResult("Computer");
+        SearchPageObject.waitForSearchResult("Computer program");
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.assertTherePageOfSearchIsClose();
+    }
+
+    @Test
     public void testCancelSearch() {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 

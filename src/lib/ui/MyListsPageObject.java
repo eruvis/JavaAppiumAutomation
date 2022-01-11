@@ -23,6 +23,11 @@ public class MyListsPageObject extends MainPageObject {
     /* TEMPlATES METHODS */
 
     public void openFolderByName(String nameOfFolder) {
+        this.waitForElementPresent(
+                By.id("org.wikipedia:id/item_container"),
+                "Cannot find item container"
+        );
+
         String folderNameXpath = getFolderXpathByName(nameOfFolder);
 
         this.waitForElementAndClick(
@@ -30,6 +35,12 @@ public class MyListsPageObject extends MainPageObject {
                 "Cannot find folder by name " + nameOfFolder,
                 5
         );
+    }
+
+    public void openArticleByName(String articleTitle) {
+        String articleXpath = getSavedArticleXpathByTitle(articleTitle);
+
+        this.waitForElementAndClick(By.xpath(articleXpath), "Cannot find saved article by title " + articleTitle, 5);
     }
 
     public void waitForArticleToAppearByTitle(String articleTitle) {

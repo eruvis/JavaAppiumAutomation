@@ -72,4 +72,8 @@ public class SearchPageObject extends MainPageObject {
     public void assertThereIsNoResultOfSearch() {
         this.waitForElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT), "We supposed not to find any result!", 5);
     }
+
+    public void assertTherePageOfSearchIsClose() {
+        this.waitForElementNotPresent(By.id("org.wikipedia:id/fragment_search_results"), "Search results are not missing", 5);
+    }
 }
