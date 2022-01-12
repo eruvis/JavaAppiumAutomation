@@ -64,4 +64,23 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.waitForEmptyResultsLabel();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testSearchElementByTitleAndDescription() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        String searchLine = "Kotlin";
+        SearchPageObject.typeSearchLine(searchLine);
+
+        String firstTitle = "Kotlin",
+                firstDescription = "Wikimedia disambiguation page";
+        String secondTitle = "Kotlin (programming language)",
+                secondDescription = "Programming language";
+        String thirdTitle = "Kotlin-class destroyer",
+                thirdDescription = "Class of Soviet cold-war destroyers";
+
+        SearchPageObject.waitForElementByTitleAndDescription(firstTitle, firstDescription);
+        SearchPageObject.waitForElementByTitleAndDescription(secondTitle, secondDescription);
+        SearchPageObject.waitForElementByTitleAndDescription(thirdTitle, thirdDescription);
+    }
 }

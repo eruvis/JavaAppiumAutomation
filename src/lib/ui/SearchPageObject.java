@@ -9,6 +9,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_BY_TWO_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                    "//*[@resource-id='org.wikipedia:id/page_list_item_title' and @text='{FIRST_SUBSTRING}']" +
+                    "/following-sibling::android.widget.TextView[@resource-id='org.wikipedia:id/page_list_item_description' and @text='{SECOND_SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
 
@@ -19,6 +22,12 @@ public class SearchPageObject extends MainPageObject {
     /* TEMPlATES METHODS */
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    private static String getResultSearchElementByTitleAndDescription(String firstSubstring, String secondSubstring) {
+        return SEARCH_RESULT_BY_TWO_SUBSTRING_TPL
+                .replace("{FIRST_SUBSTRING}", firstSubstring)
+                .replace("{SECOND_SUBSTRING}", secondSubstring);
     }
     /* TEMPlATES METHODS */
 
@@ -52,6 +61,15 @@ public class SearchPageObject extends MainPageObject {
     public void clickByArticleWithSubstring(String substring) {
         String searchResultXpath = getResultSearchElement(substring);
         this.waitForElementAndClick(By.xpath(searchResultXpath), "Cannot find and click search result with substring" + substring, 10);
+    }
+
+    public void waitForElementByTitleAndDescription(String title, String description) {
+        String searchResultXpath = getResultSearchElementByTitleAndDescription(title, description);
+        this.waitForElementPresent(
+                By.xpath(searchResultXpath),
+                "Cannot find search result with title \"" + title + "\" and description \"" + description + '\"',
+                15
+        );
     }
 
     public int getAmountOfFoundArticles() {
