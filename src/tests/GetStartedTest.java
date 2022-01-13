@@ -11,7 +11,7 @@ public class GetStartedTest extends CoreTestCase {
         if (this.platform.isAndroid()) {
             return;
         }
-        
+
         WelcomePageObject WelcomePageObject = new WelcomePageObject(driver);
 
         WelcomePageObject.waitForLearnMoreLink();
