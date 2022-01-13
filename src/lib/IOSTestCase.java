@@ -2,11 +2,13 @@ package lib;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.touch.WaitOptions;
 import junit.framework.TestCase;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
+import java.time.Duration;
 
 public class IOSTestCase extends TestCase {
     protected AppiumDriver driver;
@@ -46,6 +48,6 @@ public class IOSTestCase extends TestCase {
     }
 
     protected void backgroundApp(int seconds) {
-        driver.runAppInBackground(seconds);
+        driver.runAppInBackground(Duration.ofSeconds(seconds));
     }
 }
