@@ -23,11 +23,6 @@ abstract public class MyListsPageObject extends MainPageObject {
     /* TEMPlATES METHODS */
 
     public void openFolderByName(String nameOfFolder) {
-        this.waitForElementPresent(
-                "org.wikipedia:id/item_container",
-                "Cannot find item container"
-        );
-
         String folderNameXpath = getFolderXpathByName(nameOfFolder);
 
         this.waitForElementAndClick(

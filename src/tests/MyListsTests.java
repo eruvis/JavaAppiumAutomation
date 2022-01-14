@@ -38,7 +38,6 @@ public class MyListsTests extends CoreTestCase {
 
         if (Platform.getInstance().isAndroid()) {
             MyListPageObject.openFolderByName(nameOfFolder);
-
         }
 
         MyListPageObject.swipeByArticleToDelete(articleTitle);
@@ -47,45 +46,58 @@ public class MyListsTests extends CoreTestCase {
     @Test
     public void testSaveTwoArticlesToMyList() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
-
         SearchPageObject.initSearchInput();
-        String firstSearchRequest = "Java";
+        String firstSearchRequest = "Selenium";
         SearchPageObject.typeSearchLine(firstSearchRequest);
-        String firstArticleTitle = "Java (programming language)";
+        String firstArticleTitle = "Selenium (software)";
         SearchPageObject.clickByArticleWithSubstring(firstArticleTitle);
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
 
         String nameOfFolder = "List for ex.5";
-        ArticlePageObject.addArticleToMyNewList(nameOfFolder);
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyNewList(nameOfFolder);
+        } else {
+            ArticlePageObject.addArticlesToMySave();
+        }
         ArticlePageObject.closeArticle();
 
         SearchPageObject.initSearchInput();
-        String secondSearchRequest = "Appium";
+        String secondSearchRequest = "Java";
         SearchPageObject.typeSearchLine(secondSearchRequest);
-        String secondArticleTitle = "Appium";
+        String secondArticleTitle = "Java (programming language)";
+        String secondArticleSubtitle = "Object-oriented programming language";
         SearchPageObject.clickByArticleWithSubstring(secondArticleTitle);
 
         ArticlePageObject.waitForTitleElement();
-        ArticlePageObject.addArticleToMyExistingList(nameOfFolder);
+
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyExistingList(nameOfFolder);
+        } else {
+            ArticlePageObject.addArticlesToMySave();
+        }
         ArticlePageObject.closeArticle();
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
-        MyListPageObject.openFolderByName(nameOfFolder);
+        MyListsPageObject MyListPageObject = MyListsPageObjectFactory.get(driver);
+
+        if (Platform.getInstance().isAndroid()) {
+            MyListPageObject.openFolderByName(nameOfFolder);
+
+        }
 
         MyListPageObject.swipeByArticleToDelete(firstArticleTitle);
         MyListPageObject.openArticleByName(secondArticleTitle);
 
-        String articleTitle = ArticlePageObject.getArticleTitle();
+        String articleSubtitle = ArticlePageObject.getArticleSubtitle();
 
         assertEquals(
                 "We see unexpected title!",
-                secondArticleTitle,
-                articleTitle
+                secondArticleSubtitle,
+                articleSubtitle
         );
     }
 }

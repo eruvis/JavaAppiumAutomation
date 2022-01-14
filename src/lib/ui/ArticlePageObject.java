@@ -7,6 +7,7 @@ import lib.Platform;
 abstract public class ArticlePageObject extends MainPageObject {
     protected static String
             TITLE,
+            SUBTITLE,
             FOOTER_ELEMENT,
             OPTIONS_BUTTON,
             OPTIONS_LAST_ELEMENT,
@@ -38,7 +39,19 @@ abstract public class ArticlePageObject extends MainPageObject {
         } else {
             return titleElement.getAttribute("name");
         }
+    }
 
+    public WebElement waitForSubtitleElement() {
+        return this.waitForElementPresent(SUBTITLE, "Cannot find subtitle title on page!", 15);
+    }
+
+    public String getArticleSubtitle() {
+        WebElement descriptionElement = waitForSubtitleElement();
+        if (Platform.getInstance().isAndroid()) {
+            return descriptionElement.getAttribute("text");
+        } else {
+            return descriptionElement.getAttribute("name");
+        }
     }
 
     public void swipeToFooter() {

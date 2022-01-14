@@ -6,6 +6,7 @@ import lib.ui.ArticlePageObject;
 public class AndroidArticlePageObject extends ArticlePageObject {
     static {
         TITLE = "id:org.wikipedia:id/view_page_title_text";
+        SUBTITLE = "id:org.wikipedia:id/view_page_subtitle_text";
         FOOTER_ELEMENT = "xpath://*[@text='View page in browser']";
         OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']";
         OPTIONS_LAST_ELEMENT = "xpath://*[@text='Font and theme']";
