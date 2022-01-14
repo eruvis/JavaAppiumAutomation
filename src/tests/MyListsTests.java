@@ -1,8 +1,11 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.*;
 import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
@@ -20,14 +23,24 @@ public class MyListsTests extends CoreTestCase {
         String articleTitle = ArticlePageObject.getArticleTitle();
         String nameOfFolder = "Learning programming";
 
-        ArticlePageObject.addArticleToMyNewList(nameOfFolder);
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyNewList(nameOfFolder);
+
+        } else {
+            ArticlePageObject.addArticlesToMySave();
+        }
         ArticlePageObject.closeArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
-        MyListPageObject.openFolderByName(nameOfFolder);
+        MyListsPageObject MyListPageObject = MyListsPageObjectFactory.get(driver);
+
+        if (Platform.getInstance().isAndroid()) {
+            MyListPageObject.openFolderByName(nameOfFolder);
+
+        }
+
         MyListPageObject.swipeByArticleToDelete(articleTitle);
     }
 
@@ -58,7 +71,7 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject.addArticleToMyExistingList(nameOfFolder);
         ArticlePageObject.closeArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListPageObject = new MyListsPageObject(driver);

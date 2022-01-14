@@ -137,4 +137,8 @@ abstract public class ArticlePageObject extends MainPageObject {
     public void assertTitleElementPresent() {
         this.assertElementPresent(TITLE, "Cannot find title");
     }
+
+    public void addArticlesToMySave() {
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_lIST_BUTTON, "Cannot find options to add article to my list", 5);
+    }
 }
